@@ -1,0 +1,11 @@
+/home/adam/Documents/VSCODE/bin/Debug/netcoreapp3.0/VSCODE
+/home/adam/Documents/VSCODE/bin/Debug/netcoreapp3.0/VSCODE.deps.json
+/home/adam/Documents/VSCODE/bin/Debug/netcoreapp3.0/VSCODE.runtimeconfig.json
+/home/adam/Documents/VSCODE/bin/Debug/netcoreapp3.0/VSCODE.runtimeconfig.dev.json
+/home/adam/Documents/VSCODE/bin/Debug/netcoreapp3.0/VSCODE.dll
+/home/adam/Documents/VSCODE/bin/Debug/netcoreapp3.0/VSCODE.pdb
+/home/adam/Documents/VSCODE/obj/Debug/netcoreapp3.0/VSCODE.csprojAssemblyReference.cache
+/home/adam/Documents/VSCODE/obj/Debug/netcoreapp3.0/VSCODE.AssemblyInfoInputs.cache
+/home/adam/Documents/VSCODE/obj/Debug/netcoreapp3.0/VSCODE.AssemblyInfo.cs
+/home/adam/Documents/VSCODE/obj/Debug/netcoreapp3.0/VSCODE.dll
+/home/adam/Documents/VSCODE/obj/Debug/netcoreapp3.0/VSCODE.pdb
