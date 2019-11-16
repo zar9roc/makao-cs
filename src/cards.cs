@@ -1,29 +1,52 @@
-public class Deck {
-    //vector<int> deck;
-    virtual public Deck(int amoutOfDecks) {
-        //populateDeck(amountOfDecks)
-    }
-    public /*docelowo vector<int>*/int[] takeCard(int amount) {
-            //losuj kartę z dostępnych w talii
-            //usuń ją z talii, oraz dodaj do tablicy kart wydanych
-            //aż amount = vector.size
-        return 1;
-    }
-    private returnCardsToDeck() {
-        //
-    }
-}
+namespace makao.cards {
+    public class Deck {
+        List<int> deck = new List<int>();
+        
+        virtual public Deck(int amoutOfDecks) {
+            //populateDeck(amountOfDecks)
+        }
+        public List<int> takeCard(int amount) {
+            List<int> zbior = new List<int>();
+            Random rnd = new Random();
+            int deckSize = deck.size() - 1; //tylko jedno odwołanie
+            
+            for(int i = amount; --i >= 0;) {
+                int r = rnd.Next(0,deckSize);
+                zbior.Add(r);
+                deck.RemoveAt(r);
+                deckSize--;
+            }
 
-public class Table {
-    //vector<int> stos;
-    public Table(){
-        //nameOfDeck.takeCard(1);
+            return zbior;
+        }
+        private returnCardsToDeck() {
+            //takeCardsFromTable();
+            
+        }
     }
-    //jakieś printy co tutaj leży może
-    //albo podaj jakąś kartę wstecz
-    public void putCard(int cardId) {
-        //stos.add(cardId)
-        //może jakieś schodki
-        //albo wcześniejsza weryfikacja (może w game) czy podana karta może być dodana
+
+    public class Table {
+        List<int> stos;
+        public Table(){
+            //nameOfDeck.takeCard(1);
+        }
+        //jakieś printy co tutaj leży może
+        //albo podaj jakąś kartę wstecz
+        public void putCard(int cardId) {
+            //stos.add(cardId)
+            //może jakieś schodki
+            //albo wcześniejsza weryfikacja (może w game) czy podana karta może być dodana
+        }
+        public int getTopCard() {
+            return stos[stos.size - 1];
+        }
+        protected List<int> returnCards() {
+            int topCard = stos[stos.size() - 1];
+            stos.RemoveAt(stos.size() - 1);
+            List<int> cardsToReturn = stos;
+            stos.Clear();
+            stos.Add(topCard);
+        }
+
     }
 }

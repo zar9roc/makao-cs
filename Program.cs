@@ -1,4 +1,8 @@
 ﻿using System;
+using makao.game;
+using makao.io;
+using makao.cards;
+using makao.player;
 
 namespace VSCODE
 {
@@ -6,11 +10,15 @@ namespace VSCODE
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
-            //create game instance
-            //  for n players
-            //  with m decks
-            //game.Game gra = new game.Game("fixedName", 4, 1);
+            int plnum = 2; 
+            int qdeck = 1;
+
+            Game gra = new Game("gamename", plnum, qdeck);
+
+            gra.playGame();
+            //ew zapisanie wyników gry do jakiejś bazy danych
+            //ew zamknięcie gry
+            
         }
     }
 }

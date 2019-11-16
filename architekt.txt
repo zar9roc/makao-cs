@@ -1,0 +1,36 @@
+PROGRAM
+> przyjmuje ilość graczy
+> przyjmuje ilośc talii
+> stwarza grę 
+> dołącza do gry
+> zamyka grę
+
+game 
+> wybiera pierwszego gracza
+> wybiera pierwszą kartę
+> przekazuje ruch następnemu graczowi
+> przechowuje informacje o ilości kart do pobrania na stosie
+> usuwa z gry graczy którzy wygrali
+
+player
+> rzuca karty na stół
+> pobiera kartę z talii
+> żąda figury (J)
+> żąda koloru (A)
+> w przypadku zagrożenia przebija kartę na stole
+> mówi makao //dodać później
+
+player:bot
+> kalkuluje najlepszy ruch
+
+talia
+> daje kartę ze swojego stosu (vector)
+> przyjmuje karty gdy skończy się stos 
+
+stół
+> przyjmuje karty na wierzch
+> odrzuca karty gdy panuje jakaś zasada
+
+interfejs (statyczny)
+> prosi graczy o rzucanie kart lub pobieranie z talii
+> informuje o przebiegu gry, ilości kart trzymanych w rękach graczy
