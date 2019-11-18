@@ -8,19 +8,34 @@ namespace makao.game {
         int currentPlayer;
         int penaltyStack;
         int gamemode;
+
+        public Deck talia;
+        public Table stol;
+        public List<Player> gracze;
         
         public Game(string nameGame, int playersNb, int cardsNb) {
             name = nameGame;
             numberOfPlayers = playersNb;
             numberOfPlayingPlayers = playersNb;
             numberOfStartingCards = cardsNb;
-            topCard = 0; //= nameofdeck.takeCard();
+            talia = new Deck();
+            stol = new Table();
+            for(int i = 0; i < playersNb; i++) {
+                gracze.Add(new player());
+            }
             //TOFDOdodać przeciążenie konstruktora bez wybranej liczby talii, 
             //niech sobie sam policzy pasującą ilość
+
         }
 
         public string playGame() {
             while(numberOfPlayingPlayers >= 2) {
+                if(gracze.at(currentPlayer).getStunCount()) {
+                    gracze.at(currentPlayer).decreaseStunCount(); //coś mi linker szwankuje 
+                    //nextPlayer();
+                    continue;
+                }
+
                 if(gamemode == 0) { //taa, mogę to zrobić switch:case
                     //normalny przebieg tury danego gracza
                     //gracz[i].ruszSię(); //albo i nie, kiedy ma kolejkę
