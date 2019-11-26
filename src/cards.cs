@@ -1,8 +1,9 @@
 namespace makao.cards {
     public class Deck : Game {
-        List<int> deck = new List<int>();
+        List<int> deck;
         
         virtual public Deck(int amoutOfDecks) {
+            deck = new List<int>();
             //populateDeck(amountOfDecks)
         }
         public List<int> takeCard(int amount) {
@@ -21,8 +22,12 @@ namespace makao.cards {
 
             return zbior;
         }
-        private returnCardsToDeck() {
-            //takeCardsFromTable();
+        private void returnCardsToDeck(List<int> returnedCards) {
+            deck.Concat(returnedCards); //jeżeli to zadziała... xD
+            /*
+            A w game.cs dać:
+            returnCardsToDeck(instancjaTable.returnCards());
+            */
             
         }
     }
@@ -42,7 +47,7 @@ namespace makao.cards {
         public int getTopCard() {
             return stos[stos.size - 1];
         }
-        protected List<int> returnCards() { //dodać wyjątek gdy nie ma kart na stole
+        public List<int> returnCards() { //dodać wyjątek gdy nie ma kart na stole
             int topCard = stos[stos.size() - 1];
             stos.RemoveAt(stos.size() - 1);
             List<int> cardsToReturn = stos;

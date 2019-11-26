@@ -28,6 +28,21 @@ namespace makao.game {
 
         }
 
+        /*
+        public Game(string nameGame, int playersNb) {
+            name = nameGame;
+            numberOfPlayers = playersNb;
+            numberOfPlayingPlayers = playersNb;
+            //numberOfStartingCards = calculateCardsNb();
+            //numberOfStartingCards = cardsNb;
+            talia = new Deck();
+            stol = new Table();
+            for(int i = 0; i < playersNb; i++) {
+                gracze.Add(new player());
+            }
+        }
+        */
+
         public string playGame() {
             while(numberOfPlayingPlayers >= 2) {
                 if(gracze.at(currentPlayer).getStunCount()) {
