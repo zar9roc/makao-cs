@@ -15,7 +15,7 @@ namespace VSCODE
 
             Game gra = new Game("gamename", plnum, qdeck);
 
-            gra.playGame();
+            string przegrany = gra.playGame();
             //ew zapisanie wyników gry do jakiejś bazy danych
             //ew zamknięcie gry
             

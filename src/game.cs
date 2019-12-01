@@ -13,7 +13,7 @@ namespace makao.game {
         public Table stol;
         public List<Player> gracze;
         
-        public Game(string nameGame, int playersNb, int cardsNb) {
+        public Game(string nameGame, int playersNb, int cardsNb, int decksNb) {
             name = nameGame;
             numberOfPlayers = playersNb;
             numberOfPlayingPlayers = playersNb;
@@ -22,12 +22,21 @@ namespace makao.game {
             stol = new Table();
             for(int i = 0; i < playersNb; i++) {
                 gracze.Add(new player());
+                for(int j=0; j < cardsNb; j++) {
+                    talia.drawCard(gracze[j]);
+                }
             }
+
             //TOFDOdodać przeciążenie konstruktora bez wybranej liczby talii, 
             //niech sobie sam policzy pasującą ilość
+        }
+        public Game(string nameGame, int playersNb, int cardsNb) {
+            Game(nameGame, playersNb, cardsNb, playersNb % 4);
+        }
+        public Game(int playersNb, int cardsNb, int decksNb) : this("Gra_"+playersNb+cardsNb,playersNb,cardsNb, decksNb){
 
         }
-
+        
         /*
         public Game(string nameGame, int playersNb) {
             name = nameGame;

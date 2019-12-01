@@ -1,12 +1,26 @@
 namespace makao.cards {
-    public class Deck : Game {
-        List<int> deck;
+    public class Deck {
         
-        virtual public Deck(int amoutOfDecks) {
-            deck = new List<int>();
-            //populateDeck(amountOfDecks)
+        //generator liczb losowych deckInf
+        
+        public Deck(int amoutOfDecks) {
         }
         public List<int> takeCard(int amount) {
+            List<int> zbior = new List<int>();
+            //losuj element zbioru x amount
+            return zbior;
+        }
+    }
+
+    class finDeck : Deck {
+        List<int> deck;
+
+        public finDeck() {
+            deck = new List<int>();
+            //populateDeck(amountOfDecks) ??
+        }
+        
+        public override List<int> takeCard(int amount) {
             List<int> zbior = new List<int>();
             Random rnd = new Random();
             int lastCardIndex = deck.size() - 1; 
@@ -22,13 +36,13 @@ namespace makao.cards {
 
             return zbior;
         }
-        private void returnCardsToDeck(List<int> returnedCards) {
+
+        private override void returnCardsToDeck(List<int> returnedCards) {
             deck.Concat(returnedCards); //jeżeli to zadziała... xD
             /*
             A w game.cs dać:
             returnCardsToDeck(instancjaTable.returnCards());
             */
-            
         }
     }
 
@@ -38,7 +52,7 @@ namespace makao.cards {
             //nameOfDeck.takeCard(1);
         }
         //jakieś printy co tutaj leży może
-        //albo podaj jakąś kartę wstecz
+        //albo podaj jakąś kartę wstecz 
         public void putCard(int cardId) {
             //stos.add(cardId)
             //może jakieś schodki
