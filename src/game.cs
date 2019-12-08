@@ -1,3 +1,4 @@
+using System;
 namespace makao.game {
     public class Game {
         string name;
@@ -13,13 +14,16 @@ namespace makao.game {
         public Table stol;
         public List<Player> gracze;
         
-        public Game(string nameGame, int playersNb, int cardsNb, int decksNb) {
+        public Game(string nameGame, int playersNb, int cardsNb, int decksNb, bool findeck) {
             name = nameGame;
             numberOfPlayers = playersNb;
             numberOfPlayingPlayers = playersNb;
             numberOfStartingCards = cardsNb;
-            talia = new Deck();
-            stol = new Table();
+            stol = new Table(); 
+
+            if(findeck )talia = new finDeck(decksNb); 
+            else talia = new Deck();
+            
             for(int i = 0; i < playersNb; i++) {
                 gracze.Add(new player());
                 for(int j=0; j < cardsNb; j++) {
@@ -36,30 +40,34 @@ namespace makao.game {
         public Game(int playersNb, int cardsNb, int decksNb) : this("Gra_"+playersNb+cardsNb,playersNb,cardsNb, decksNb){
 
         }
-        
-        /*
-        public Game(string nameGame, int playersNb) {
-            name = nameGame;
-            numberOfPlayers = playersNb;
-            numberOfPlayingPlayers = playersNb;
-            //numberOfStartingCards = calculateCardsNb();
-            //numberOfStartingCards = cardsNb;
-            talia = new Deck();
-            stol = new Table();
-            for(int i = 0; i < playersNb; i++) {
-                gracze.Add(new player());
-            }
-        }
-        */
+
 
         public string playGame() {
             while(numberOfPlayingPlayers >= 2) {
+                //ogłaszanie ruchu gracza nr #
                 if(gracze.at(currentPlayer).getStunCount()) {
                     gracze.at(currentPlayer).decreaseStunCount(); //coś mi linker szwankuje 
                     //nextPlayer();
                     continue;
                 }
+                switch(gamemode) {
+                    case 0:
 
+                        break;
+                    case 1:
+                        
+                        break;
+                    case 2:
+
+                        break;
+                    case 3:
+
+                        break;
+                    case 4:
+
+                        break;
+
+                }
                 if(gamemode == 0) { //taa, mogę to zrobić switch:case
                     //normalny przebieg tury danego gracza
                     //gracz[i].ruszSię(); //albo i nie, kiedy ma kolejkę
@@ -82,7 +90,7 @@ namespace makao.game {
                 //if (player[i].cards == 0) player win, numberofplayingplayers--
                 //nextPlayer();
             }
-            return "jakis tam gracz przegrał";
+            return "zadengracz";
         }
 
         public int getTopCard() {

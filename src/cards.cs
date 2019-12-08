@@ -1,3 +1,5 @@
+using System;
+
 namespace makao.cards {
     public class Deck {
         
@@ -70,6 +72,5 @@ namespace makao.cards {
             //komunikat o zwróceniu kart do stosu
             return cardsToReturn;
         }
-
     }
 }
