@@ -1,5 +1,5 @@
 using System;
-namespace makao.player {
+namespace makao.components.player {
     public class Player {
         string name;
         bool isThisBot;

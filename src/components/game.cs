@@ -1,5 +1,9 @@
 using System;
-namespace makao.game {
+using makao.components.ioSystem;
+using makao.components.cards;
+using makao.components.player;
+
+namespace makao.components {
     public class Game {
         string name;
         int numberOfPlayers;
@@ -30,9 +34,6 @@ namespace makao.game {
                     talia.drawCard(gracze[j]);
                 }
             }
-
-            //TOFDOdodać przeciążenie konstruktora bez wybranej liczby talii, 
-            //niech sobie sam policzy pasującą ilość
         }
         public Game(string nameGame, int playersNb, int cardsNb) {
             Game(nameGame, playersNb, cardsNb, playersNb % 4);
@@ -45,6 +46,7 @@ namespace makao.game {
         public string playGame() {
             while(numberOfPlayingPlayers >= 2) {
                 //ogłaszanie ruchu gracza nr #
+                
                 if(gracze.at(currentPlayer).getStunCount()) {
                     gracze.at(currentPlayer).decreaseStunCount(); //coś mi linker szwankuje 
                     //nextPlayer();

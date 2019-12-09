@@ -3,7 +3,7 @@
 //someone coś zrobił
 //podaj ty coś
 using System;
-namespace makao.io {
+namespace makao.components.ioSystem {
     public static class IO{
 
         public static void kolejNa(int nr) {

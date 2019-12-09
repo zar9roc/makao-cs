@@ -1,6 +1,6 @@
 using System;
 
-namespace makao.cards {
+namespace makao.components.cards {
     public class Deck {
         
         //generator liczb losowych deckInf
