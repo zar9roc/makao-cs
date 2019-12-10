@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace makao.components.cards {
     public class Deck {
@@ -63,7 +64,7 @@ namespace makao.components.cards {
         public int getTopCard() {
             return stos[stos.size - 1];
         }
-        public List<int> returnCards() { //dodać wyjątek gdy nie ma kart na stole
+        public List<int> returnCards() { //dodać wyjątek gdy nie ma kart na stole -- LOL, można nie wyzwalac
             int topCard = stos[stos.size() - 1];
             stos.RemoveAt(stos.size() - 1);
             List<int> cardsToReturn = stos;

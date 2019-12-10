@@ -1,8 +1,11 @@
 using System;
+using System.Collections.Generic;
+
 namespace makao.components.player {
     public class Player {
         string name;
         bool isThisBot;
+        bool isPlaying;
         public List<int> hand;
         int stunCount;
 
@@ -10,6 +13,7 @@ namespace makao.components.player {
         public Player(/*string plName, */ bool bot) {
             name = plName;
             isThisBot = bot;
+            isPlaying = true;
             for(int i = startingCardAmount; --i >= 0;) {
                 //cards.drawCard(thisPlayer) //wykonać w game
                 

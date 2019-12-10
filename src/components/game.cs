@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using makao.components.ioSystem;
 using makao.components.cards;
 using makao.components.player;
@@ -46,53 +47,54 @@ namespace makao.components {
         public string playGame() {
             while(numberOfPlayingPlayers >= 2) {
                 //ogłaszanie ruchu gracza nr #
+                IO.kolejNa(currentPlayer);
                 
-                if(gracze.at(currentPlayer).getStunCount()) {
-                    gracze.at(currentPlayer).decreaseStunCount(); //coś mi linker szwankuje 
-                    //nextPlayer();
+                if(gracze[currentPlayer].getStunCount()) {
+                    gracze[currentPlayer].decreaseStunCount();
+                    nextPlayer();
                     continue;
                 }
                 switch(gamemode) {
                     case 0:
-
-                        break;
-                    case 1:
-                        
-                        break;
-                    case 2:
-
-                        break;
-                    case 3:
-
-                        break;
-                    case 4:
-
-                        break;
-
-                }
-                if(gamemode == 0) { //taa, mogę to zrobić switch:case
                     //normalny przebieg tury danego gracza
-                    //gracz[i].ruszSię(); //albo i nie, kiedy ma kolejkę
-                } else if (gamemode == 1) {
-                    //musisz przebić leżącą kartę, albo się poddać
-                    //gracz[i].przebijaj(); //chyba że śpi to nie przebija
-                } else if (gamemode == 2) {
-                    //musisz wyłożyć żądany kolor, (tryb Asowy)
+                    //gracz[i].ruszSię(); 
+
+                    break;
+                    case 1:
+                        //musisz przebić leżącą kartę, albo się poddać
+                        //gracz[i].przebijaj(); //chyba że śpi to nie przebija
+                    break;
+                    case 2:
+                        //musisz wyłożyć żądany kolor, (tryb Asowy)
                     //if(gracz[i].ruszSię(kolor)) {
                     //    gamemode == 0 //ruszsię zwraca prawdę, gdy gracz coś położył, 
                     //                      przez co mechanika asa już niepotrzebna
                     //}
-                } else if (gamemode == 3) {
-                    //tutaj powinien być własny while(loop) żeby nie gubić kolejki graczy
+                    break;
+                    case 3:
+                        //tutaj powinien być własny while(loop) żeby nie gubić kolejki graczy
                     //tryb jopkowy handlowy
-                } else if (gamemode == 4) {
-                    //tutaj też własny loop
+                    break;
+                    case 4:
+                        //tutaj też własny loop
                     //tryb jopkowy egzekucyjny
+                    break;
+
                 }
-                //if (player[i].cards == 0) player win, numberofplayingplayers--
-                //nextPlayer();
+
+                //if (player[i].cards == 0) player win, 
+                nextPlayer();
+                
             }
+            //sprawdz ktory gracz nie wygrał
             return "zadengracz";
+        }
+
+        private void nextPlayer() {
+            if(++currentPlayer == numberOfPlayers) currentPlayer = 0;
+            while(!gracze[currentPlayer].isPlaying) {
+                if(++currentPlayer == numberOfPlayers) currentPlayer = 0;
+            }
         }
 
         public int getTopCard() {
