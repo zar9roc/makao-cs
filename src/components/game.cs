@@ -47,9 +47,9 @@ namespace makao.components {
         public string playGame() {
             while(numberOfPlayingPlayers >= 2) {
                 //ogłaszanie ruchu gracza nr #
-                IO.kolejNa(currentPlayer);
+                ioSystem.ioSystem.kolejNa(currentPlayer);
                 
-                if(gracze[currentPlayer].getStunCount()) {
+                if(gracze[currentPlayer].StunCount) {
                     gracze[currentPlayer].decreaseStunCount();
                     nextPlayer();
                     continue;

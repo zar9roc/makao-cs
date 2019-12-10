@@ -21,9 +21,7 @@ namespace makao.components.player {
         }
 
         //przerobić na właściwość        
-        public int getStunCount() {
-            return stunCount;
-        }
+        public int StunCount => stunCount;
         public void decreaseStunCount() {
             stunCount--;
         }
