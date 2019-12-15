@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace makao.components.cards {
     public class Deck {
@@ -9,8 +10,12 @@ namespace makao.components.cards {
         public Deck(int amoutOfDecks) {
         }
         public List<int> takeCard(int amount) {
+            uint rand = new Random();
             List<int> zbior = new List<int>();
-            //losuj element zbioru x amount
+
+            for(var i = amount; --i >= 0;) 
+                zbior.Add(rand.Next() % 52); //żeby sie ujemne nie losowaly
+            
             return zbior;
         }
     }
@@ -41,7 +46,7 @@ namespace makao.components.cards {
         }
 
         private override void returnCardsToDeck(List<int> returnedCards) {
-            deck.Concat(returnedCards); //jeżeli to zadziała... xD
+            deck.Concat(returnedCards); //yeah, dziala
             /*
             A w game.cs dać:
             returnCardsToDeck(instancjaTable.returnCards());
@@ -61,10 +66,10 @@ namespace makao.components.cards {
             //może jakieś schodki
             //albo wcześniejsza weryfikacja (może w game) czy podana karta może być dodana
         }
-        public int getTopCard() {
+        public int getTopCard() { //get/set?
             return stos[stos.size - 1];
         }
-        public List<int> returnCards() { //dodać wyjątek gdy nie ma kart na stole -- LOL, można nie wyzwalac
+        public List<int> returnCards() { 
             int topCard = stos[stos.size() - 1];
             stos.RemoveAt(stos.size() - 1);
             List<int> cardsToReturn = stos;

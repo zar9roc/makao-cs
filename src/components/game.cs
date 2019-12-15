@@ -30,10 +30,8 @@ namespace makao.components {
             else talia = new Deck();
             
             for(int i = 0; i < playersNb; i++) {
-                gracze.Add(new player());
-                for(int j=0; j < cardsNb; j++) {
-                    talia.drawCard(gracze[j]);
-                }
+                gracze.Add(new Player());
+                gracze[i].hand = talia.takeCard(cardsNb);
             }
         }
         public Game(string nameGame, int playersNb, int cardsNb) {
@@ -46,6 +44,7 @@ namespace makao.components {
 
         public string playGame() {
             while(numberOfPlayingPlayers >= 2) {
+
                 //ogłaszanie ruchu gracza nr #
                 ioSystem.ioSystem.kolejNa(currentPlayer);
                 
@@ -58,13 +57,22 @@ namespace makao.components {
                     case 0:
                     //normalny przebieg tury danego gracza
                     //gracz[i].ruszSię(); 
+                    if(gracze[currentPlayer].hand.Count == 0) gracze[currentPlayer].isPlaying = false;
 
                     break;
                     case 1:
-                        //musisz przebić leżącą kartę, albo się poddać
-                        //gracz[i].przebijaj(); //chyba że śpi to nie przebija
+                        //musisz przebić leżącą kartę, albo pobrać (wiele) kart
+                        int lastcard = topCard;
+                        //gracz[i].przebijaj(); 
+                        if(lastcard == topCard) {
+                            //chargestack =0, gracz.dajkarty(charge)
+                        } 
+                        //czy gracz nie wygrał (może dać to na sam koniec?)
                     break;
                     case 2:
+                    {
+                        
+                    }
                         //musisz wyłożyć żądany kolor, (tryb Asowy)
                     //if(gracz[i].ruszSię(kolor)) {
                     //    gamemode == 0 //ruszsię zwraca prawdę, gdy gracz coś położył, 
@@ -72,29 +80,49 @@ namespace makao.components {
                     //}
                     break;
                     case 3:
+                    {
+                        int whileCount = numberOfPlayingPlayers;
+                        int yCurrentPlayer = currentPlayer;
+                        while (whileCount) {
+                            int lastcard = topCard;
+                            //gracz rusza się wg trybu handlowego jopka
+                            if(lastcard == topCard) { //TODO: Zamienić mechanikę lastCard na zwrot funkcji
+                                whileCount--;
+                            }
+                            else whileCount = numberOfPlayingPlayers;
+                            yCurrentPlayer = nextPlayer(yCurrentPlayer);
+                        }
                         //tutaj powinien być własny while(loop) żeby nie gubić kolejki graczy
                     //tryb jopkowy handlowy
+                        gamemode = 0;
+                    }
                     break;
                     case 4:
+                    {
+                        int whileCount = numberOfPlayingPlayers;
+                        int yCurrentPlayer = currentPlayer;
                         //tutaj też własny loop
                     //tryb jopkowy egzekucyjny
+                        gamemode = 0;
+                    }
                     break;
 
                 }
 
                 //if (player[i].cards == 0) player win, 
-                nextPlayer();
+                currentPlayer = nextPlayer(currentPlayer);
                 
             }
             //sprawdz ktory gracz nie wygrał
             return "zadengracz";
         }
 
-        private void nextPlayer() {
-            if(++currentPlayer == numberOfPlayers) currentPlayer = 0;
+        private int nextPlayer(int round) {
+            if(++round == numberOfPlayers) roun = 0;
             while(!gracze[currentPlayer].isPlaying) {
-                if(++currentPlayer == numberOfPlayers) currentPlayer = 0;
+                if(++round == numberOfPlayers) round = 0;
             }
+            return round;
         }
 
         public int getTopCard() {

@@ -15,7 +15,6 @@ namespace makao
             string przegrany = gra.playGame();
             //ew zapisanie wyników gry do jakiejś bazy danych
             //ew zamknięcie gry
-
         }
     }
 }
