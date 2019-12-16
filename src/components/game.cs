@@ -1,3 +1,18 @@
+//TODO:
+
+//Rozpatrzanie efektów położenia karty w gamemode 0
+/* Rozwinięcie: 
+    gamemode 1:
+    gamemode 2:
+    gamemode 3:
+    gamemode 4:
+    gamemode 5:
+*/
+
+//sensowne ustawienie warunku sprawdzającego czy gracz wygrał
+//prywatna metoda sprawdzająca który gracz przegrał
+
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +43,7 @@ namespace makao.components {
             numberOfPlayers = playersNb;
             numberOfPlayingPlayers = playersNb;
             numberOfStartingCards = cardsNb;
-            stol = new Table(); 
+            stol = new Table(); //else finTable
 
             if(findeck )talia = new finDeck(decksNb); 
             else talia = new Deck();
@@ -48,7 +63,6 @@ namespace makao.components {
         public string playGame() {
             while(numberOfPlayingPlayers >= 2) {
 
-                //ogłaszanie ruchu gracza nr #
                 ioSystem.ioSystem.kolejNa(currentPlayer);
                 
                 if(gracze[currentPlayer].StunCount) {
@@ -63,6 +77,7 @@ namespace makao.components {
                         if(input == -1) {
                             ioSystem.ioSystem.playerIdle(currentPlayer);
                             gracze[currentPlayer].hand.Add(talia.takeOneCard());
+                            //szybkie przebicie?
                         }
                         else {
                             stol.TopCard = input; 
@@ -149,10 +164,13 @@ namespace makao.components {
                 }
 
                 //if (player[i].cards == 0) player win, 
+
+                //WYDRUK INFO O RĘKACH WSZYSTKICH GRACZY
+                
                 currentPlayer = nextPlayer(currentPlayer);
                 
             }
-            //sprawdz ktory gracz nie wygrał
+            //sprawdz ktory gracz przegrał
             return "zadengracz";
         }
 

@@ -1,20 +1,21 @@
+//TODO:
+
+//Ujednolicić nazwy metod dla stołu (niekrytyczne)
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace makao.components.cards {
     public class Deck {
-        
-        //generator liczb losowych deckInf
-        
-        public Deck(int amoutOfDecks) {
+        public Deck() {
         }
         public List<int> takeCard(int amount) {
             uint rand = new Random();
             List<int> zbior = new List<int>();
 
             for(var i = amount; --i >= 0;) 
-                zbior.Add(rand.Next() % 52); //żeby sie ujemne nie losowaly
+                zbior.Add(rand.Next() % 52);
             
             return zbior;
         }
@@ -76,7 +77,7 @@ namespace makao.components.cards {
     }
     public class finTable : Table { //do skończenia innym razem
         List<int> stos;
-        public Table(){
+        public Table() {
             //nameOfDeck.takeCard(1);
         }
         //jakieś printy co tutaj leży może

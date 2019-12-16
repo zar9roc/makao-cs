@@ -1,3 +1,7 @@
+//TODO
+//ogarnąć rozdawanie startowych kart
+//dla playcard() dodać przeładowanie z uwzględnieniem gamemode 1-5 
+
 using System;
 using System.Collections.Generic;
 
@@ -29,7 +33,7 @@ namespace makao.components.player {
             stunCount--;
         }
 
-        public int playCard(int topCard) {
+        public int playCard(int topCard) { 
             int pCard = -2;
             do {
                 if(pCard != -2) ioSystem.ioSystem.incompatibileCard();

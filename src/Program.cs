@@ -1,4 +1,8 @@
-﻿using System;
+﻿//TODO:
+
+//Dać możliwośc wybrania ilości graczy, startowych kart
+
+using System;
 using makao.components;
 
 namespace makao
@@ -7,10 +11,10 @@ namespace makao
     {
         static void Main(string[] args)
         {
-            int plnum = 2;
-            int qdeck = 1;
+            int plnum = 4;
+            int startingCards = 5;
 
-            Game gra = new Game("gamename", plnum, qdeck);
+            Game gra = new Game("gamename", plnum, startingCards);
 
             string przegrany = gra.playGame();
             //ew zapisanie wyników gry do jakiejś bazy danych

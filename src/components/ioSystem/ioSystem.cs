@@ -1,7 +1,7 @@
-//import io
-//static input/output class
-//someone coś zrobił
-//podaj ty coś
+//TODO:
+
+
+
 using System;
 using System.Collections.Generic;
 
