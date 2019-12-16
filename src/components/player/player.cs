@@ -29,22 +29,41 @@ namespace makao.components.player {
             stunCount--;
         }
 
-        public int playCard(List<int> hand) {
+        public int playCard(int topCard) {
             int pCard = -2;
-            while(pCard == -2) {
-                ioSystem.ioSystem.printCurrentPlayerHand(hand);
-                try {
-                    pCard = Int32.Parse(Console.ReadLine());
-                } catch(FormatException e) {
-                    //blabla, wpisales glupoty, sproboj jeszcze raz
-                    pCard = -2;
-                }
-                ioSystem.ioSystem.formatError();
-                if(pCard >= hand.Count || pCard < -2) pCard = -2;
+            do {
+                if(pCard != -2) ioSystem.ioSystem.incompatibileCard();
 
-            }                     
-                
-            return pCard;
+                while(pCard == -2) {
+                    ioSystem.ioSystem.printCurrentPlayerHand(hand);
+                    try {
+                        pCard = Int32.Parse(Console.ReadLine());
+                        pCard--; //dla gracza karta #0 jest kartą #1
+                    } catch(FormatException e) {
+                        ioSystem.ioSystem.formatError();
+                        pCard = -2;
+                    }
+                    
+                    if(pCard >= hand.Count || pCard < -2) {
+                        ioSystem.ioSystem.outOfHandRange();
+                        pCard = -2;
+                    } 
+                }
+
+            } while (
+               ((pCard / 4) == (topCard / 4))
+                || ((pCard % 13) == (topCard % 13))
+                || pCard == 12 //Q♥
+                || pCard == -1 //PAS
+                );
+            if(pCard == -1) return pCard; //PAS
+            int retCard = hand[pCard];
+            hand.RemoveAt(pCard);
+            return retCard; 
         }
+    }
+
+    public class Bot : Player {
+
     }
 }

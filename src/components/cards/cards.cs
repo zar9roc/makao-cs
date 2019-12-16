@@ -18,6 +18,11 @@ namespace makao.components.cards {
             
             return zbior;
         }
+
+        public int takeOneCard() {
+            uint rand = new Random();
+            return rand.Next() % 52;
+        }
     }
 
     class finDeck : Deck {
@@ -55,6 +60,21 @@ namespace makao.components.cards {
     }
 
     public class Table {
+        private int topCard;
+
+        public Table() {
+            uint rand = new Random();
+            do {
+                topCard = rand % 52;
+            } while ((topCard % 13) <= 10 && (topCard % 13) != 0);
+        }
+
+        public int TopCard { //niewielki sens użycia
+            get => topCard;
+            set => topCard;
+        }
+    }
+    public class finTable : Table { //do skończenia innym razem
         List<int> stos;
         public Table(){
             //nameOfDeck.takeCard(1);
@@ -62,6 +82,7 @@ namespace makao.components.cards {
         //jakieś printy co tutaj leży może
         //albo podaj jakąś kartę wstecz 
         public void putCard(int cardId) {
+            stos.Add(cardId);
             //stos.add(cardId)
             //może jakieś schodki
             //albo wcześniejsza weryfikacja (może w game) czy podana karta może być dodana

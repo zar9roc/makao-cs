@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+
 using makao.components.ioSystem;
 using makao.components.cards;
 using makao.components.player;
+
 
 namespace makao.components {
     public class Game {
@@ -14,6 +17,7 @@ namespace makao.components {
         int currentPlayer;
         int penaltyStack;
         int gamemode;
+        int gamemodeKey; 
 
         public Deck talia;
         public Table stol;
@@ -38,7 +42,6 @@ namespace makao.components {
             Game(nameGame, playersNb, cardsNb, playersNb % 4);
         }
         public Game(int playersNb, int cardsNb, int decksNb) : this("Gra_"+playersNb+cardsNb,playersNb,cardsNb, decksNb){
-
         }
 
 
@@ -55,12 +58,45 @@ namespace makao.components {
                 }
                 switch(gamemode) {
                     case 0:
-                    //normalny przebieg tury danego gracza
-                    //gracz[i].ruszSię(); 
-                    if(gracze[currentPlayer].hand.Count == 0) gracze[currentPlayer].isPlaying = false;
+                    {
+                        int input = gracze[currentPlayer].playCard(stol.TopCard);
+                        if(input == -1) {
+                            ioSystem.ioSystem.playerIdle(currentPlayer);
+                            gracze[currentPlayer].hand.Add(talia.takeOneCard());
+                        }
+                        else {
+                            stol.TopCard = input; 
 
+                            switch(input % 13) {
+                                case 0: //AS
+                                {
+                                    gamemode = 3;
+                                    //io: podaj kolor, na który zmieniasz
+                                } break;
+                                case 1: //2
+                                {
+                                    gamemode = 1;
+                                } break;
+                                case 2: //3
+                                {
+                                    gamemode = 1;
+                                } break;
+                                case 3: //4
+                                {
+                                    gamemode = 2;
+                                } break;
+                                case 10:
+                                {
+                                    gamemode = 4;
+                                    //prośba o figurę
+                                }
+                            }
+                        }
+                    }
+                        if(gracze[currentPlayer].hand.Count == 0) 
+                            gracze[currentPlayer].isPlaying = false;
                     break;
-                    case 1:
+                    case 1: //PRZEBIJANIE 2,3,K
                         //musisz przebić leżącą kartę, albo pobrać (wiele) kart
                         int lastcard = topCard;
                         //gracz[i].przebijaj(); 
@@ -69,7 +105,11 @@ namespace makao.components {
                         } 
                         //czy gracz nie wygrał (może dać to na sam koniec?)
                     break;
-                    case 2:
+                    case 2: // PRZEBIJANIE 4
+                    {
+                        
+                    } break;
+                    case 3: // AS
                     {
                         
                     }
@@ -79,7 +119,7 @@ namespace makao.components {
                     //                      przez co mechanika asa już niepotrzebna
                     //}
                     break;
-                    case 3:
+                    case 4: // J HANDLOWY
                     {
                         int whileCount = numberOfPlayingPlayers;
                         int yCurrentPlayer = currentPlayer;
@@ -97,7 +137,7 @@ namespace makao.components {
                         gamemode = 0;
                     }
                     break;
-                    case 4:
+                    case 5: //J EGZEKUCYJNY
                     {
                         int whileCount = numberOfPlayingPlayers;
                         int yCurrentPlayer = currentPlayer;
@@ -106,7 +146,6 @@ namespace makao.components {
                         gamemode = 0;
                     }
                     break;
-
                 }
 
                 //if (player[i].cards == 0) player win, 
@@ -123,10 +162,6 @@ namespace makao.components {
                 if(++round == numberOfPlayers) round = 0;
             }
             return round;
-        }
-
-        public int getTopCard() {
-            return topCard;
         }
     }
 }

@@ -8,7 +8,7 @@ using System.Collections.Generic;
 namespace makao.components.ioSystem {
 
 
-    public static class ioSystem{
+    public static class ioSystem {
         //INFORMUJĄCE
         public static void kolejNa(int nr) => Console.WriteLine("Aktualnie rusza się gracz " + nr);
         public static void printCurrentPlayerHand(List<int> hand) {
@@ -20,7 +20,8 @@ namespace makao.components.ioSystem {
             }
         }
 
-        //PROSZĄCE
+        public static void playerIdle(int nr) 
+            => Console.WriteLine("Gracz {0} pomija kolejkę i pobiera kartę.", nr);
 
         //BŁĘDY
 
@@ -28,51 +29,46 @@ namespace makao.components.ioSystem {
             Console.WriteLine("Błędne wejście, spróbuj ponownie.");
         }
 
+        public static void outOfHandRange() {
+            Console.WriteLine("Karta spoza zakresu ręki");
+        }
+
+        public static void incompatibileCard() {
+            Console.WriteLine("Nie można położyć tej karty!");
+        }
+
         //POMOCNICZE
-        public static string toText(int nb) {
+        private static string toText(int nb) {
             int col = nb / 4;
             int fig = nb % 13;
             string cardName;
             switch(fig) {
                 case 0:
-                    cardName = "A";
-                break;
+                    cardName = "A"; break;
                 case 1:
-                    cardName = "2";
-                break;
+                    cardName = "2"; break;
                 case 2:
-                    cardName = "3";
-                break;
+                    cardName = "3"; break;
                 case 3:
-                    cardName = "4";
-                break;
+                    cardName = "4"; break;
                 case 4:
-                    cardName = "5";
-                break;
+                    cardName = "5"; break;
                 case 5:
-                    cardName = "6";
-                break;
+                    cardName = "6"; break;
                 case 6:
-                    cardName = "7";
-                break;
+                    cardName = "7"; break;
                 case 7:
-                    cardName = "8";
-                break;
+                    cardName = "8"; break;
                 case 8:
-                    cardName = "9";
-                break;
+                    cardName = "9"; break;
                 case 9:
-                    cardName = "10";
-                break;
+                    cardName = "10"; break;
                 case 10:
-                    cardName = "J";
-                break;
+                    cardName = "J"; break;
                 case 11:
-                    cardName = "Q";
-                break;
+                    cardName = "Q"; break;
                 case 12:
-                    cardName = "K";
-                break;
+                    cardName = "K"; break;
                 default:
                     cardName = "FIGURE-";
             }
