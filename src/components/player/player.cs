@@ -1,5 +1,5 @@
 //TODO
-//ogarnąć rozdawanie startowych kart
+
 //dla playcard() dodać przeładowanie z uwzględnieniem gamemode 1-5 
 
 using System;
@@ -10,7 +10,7 @@ using makao.components.ioSystem;
 
 namespace makao.components.player {
     public class Player {
-        string name;
+        //string name;
         bool isThisBot;
         bool isPlaying;
         public List<int> hand;
@@ -18,13 +18,9 @@ namespace makao.components.player {
 
         public Player() : this(false) {}
         public Player(/*string plName, */ bool bot) {
-            name = plName;
+            //name = plName;
             isThisBot = bot;
             isPlaying = true;
-            for(int i = startingCardAmount; --i >= 0;) {
-                //cards.drawCard(thisPlayer) //wykonać w game
-                
-            }
         }
 
         //przerobić na właściwość      
@@ -33,7 +29,7 @@ namespace makao.components.player {
             stunCount--;
         }
 
-        public int playCard(int topCard) { 
+        public int playCard(int topCard, int gamemode) { 
             int pCard = -2;
             do {
                 if(pCard != -2) ioSystem.ioSystem.incompatibileCard();

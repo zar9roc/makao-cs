@@ -2,11 +2,8 @@
 
 //Rozpatrzanie efektów położenia karty w gamemode 0
 /* Rozwinięcie: 
-    gamemode 1:
-    gamemode 2:
-    gamemode 3:
-    gamemode 4:
-    gamemode 5:
+    gamemode 4: JOPEK HANDLOWY
+    gamemode 5: JOPEK EGZEKUCYJNY
 */
 
 //sensowne ustawienie warunku sprawdzającego czy gracz wygrał
@@ -32,7 +29,8 @@ namespace makao.components {
         int currentPlayer;
         int penaltyStack;
         int gamemode;
-        int gamemodeKey; 
+        int gamemodeKey;
+        List<bool> jCheck;
 
         public Deck talia;
         public Table stol;
@@ -51,6 +49,7 @@ namespace makao.components {
             for(int i = 0; i < playersNb; i++) {
                 gracze.Add(new Player());
                 gracze[i].hand = talia.takeCard(cardsNb);
+                jCheck.Add(false);
             }
         }
         public Game(string nameGame, int playersNb, int cardsNb) {
@@ -73,11 +72,11 @@ namespace makao.components {
                 switch(gamemode) {
                     case 0:
                     {
-                        int input = gracze[currentPlayer].playCard(stol.TopCard);
+                        int input = gracze[currentPlayer].playCard(stol.TopCard, 0);
                         if(input == -1) {
                             ioSystem.ioSystem.playerIdle(currentPlayer);
                             gracze[currentPlayer].hand.Add(talia.takeOneCard());
-                            //szybkie przebicie?
+                            //szybkie przebicie? --GUI
                         }
                         else {
                             stol.TopCard = input; 
@@ -90,20 +89,28 @@ namespace makao.components {
                                 } break;
                                 case 1: //2
                                 {
+                                    penaltyStack = 2;
                                     gamemode = 1;
                                 } break;
                                 case 2: //3
                                 {
+                                    penaltyStack = 3;
                                     gamemode = 1;
                                 } break;
                                 case 3: //4
                                 {
+                                    penaltyStack = 1;
                                     gamemode = 2;
                                 } break;
                                 case 10:
                                 {
                                     gamemode = 4;
                                     //prośba o figurę
+                                }
+                                case 12:
+                                {
+                                    penaltyStack = 5;
+                                    gamemode = 1;
                                 }
                             }
                         }
@@ -113,27 +120,41 @@ namespace makao.components {
                     break;
                     case 1: //PRZEBIJANIE 2,3,K
                         //musisz przebić leżącą kartę, albo pobrać (wiele) kart
-                        int lastcard = topCard;
-                        //gracz[i].przebijaj(); 
-                        if(lastcard == topCard) {
-                            //chargestack =0, gracz.dajkarty(charge)
-                        } 
+                        int input = gracze[currentPlayer].playCard(stol.TopCard, 1);
+                        if(input == -1) {
+                            gracze[currentPlayer].hand.Add(talia.takeCard(penaltyStack));
+                            penaltyStack = 0;
+                            gamemode = 0;
+                        }
+                        else if(input % 13 == 1) penaltyStack += 2;
+                        else if(input % 13 == 2) penaltyStack += 3;
+                        else if(input % 13 == 12) penaltyStack += 5;
+                        //else IO -> coś poszło nie tak
+
+                        if(input != -1) stol.TopCard = input;
+
+                        
                         //czy gracz nie wygrał (może dać to na sam koniec?)
                     break;
                     case 2: // PRZEBIJANIE 4
                     {
-                        
+                        int input = gracze[currentPlayer].playCard(stol.TopCard, 2);
+                        if(input == -1) {
+                            gracze[currentPlayer].StunCount = penaltyStack;
+                            penaltyStack = 0;
+                            gamemode = 0;
+                        }
+                        else if(input % 13 == 3) penaltyStack++;
+                        //else IO -> coś poszło nie tak
                     } break;
                     case 3: // AS
                     {
-                        
-                    }
-                        //musisz wyłożyć żądany kolor, (tryb Asowy)
-                    //if(gracz[i].ruszSię(kolor)) {
-                    //    gamemode == 0 //ruszsię zwraca prawdę, gdy gracz coś położył, 
-                    //                      przez co mechanika asa już niepotrzebna
-                    //}
-                    break;
+                        int input = gracze[currentPlayer].playCard(gamemodeKey, 0);
+                        if(input != -1) {
+                            gamemode = 0;
+                            stol.TopCard = input;
+                        } else gracze[currentPlayer].hand.Add(talia.takeOneCard());
+                    } break;
                     case 4: // J HANDLOWY
                     {
                         int whileCount = numberOfPlayingPlayers;
