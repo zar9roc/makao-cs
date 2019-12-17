@@ -1,9 +1,7 @@
 //TODO:
 
-//Rozpatrzanie efektów położenia karty w gamemode 0
-/* Rozwinięcie: 
-    gamemode 4: JOPEK HANDLOWY
-    gamemode 5: JOPEK EGZEKUCYJNY
+/*
+    gamemodeKey request (A, J)    
 */
 
 //sensowne ustawienie warunku sprawdzającego czy gracz wygrał
@@ -77,8 +75,7 @@ namespace makao.components {
                             ioSystem.ioSystem.playerIdle(currentPlayer);
                             gracze[currentPlayer].hand.Add(talia.takeOneCard());
                             //szybkie przebicie? --GUI
-                        }
-                        else {
+                        } else {
                             stol.TopCard = input; 
 
                             switch(input % 13) {
@@ -125,6 +122,9 @@ namespace makao.components {
                             gracze[currentPlayer].hand.Add(talia.takeCard(penaltyStack));
                             penaltyStack = 0;
                             gamemode = 0;
+                        } else if(input == 11) {
+                            penaltyStack = 0;
+                            gamemode = 0;
                         }
                         else if(input % 13 == 1) penaltyStack += 2;
                         else if(input % 13 == 2) penaltyStack += 3;
@@ -143,8 +143,10 @@ namespace makao.components {
                             gracze[currentPlayer].StunCount = penaltyStack;
                             penaltyStack = 0;
                             gamemode = 0;
-                        }
-                        else if(input % 13 == 3) penaltyStack++;
+                        } else if(input == 11) {
+                            penaltyStack = 0;
+                            gamemode = 0;
+                        } else if(input % 13 == 3) penaltyStack++;
                         //else IO -> coś poszło nie tak
                     } break;
                     case 3: // AS
@@ -159,17 +161,19 @@ namespace makao.components {
                     {
                         int whileCount = numberOfPlayingPlayers;
                         int yCurrentPlayer = currentPlayer;
+                        int input;
                         while (whileCount) {
-                            int lastcard = topCard;
-                            //gracz rusza się wg trybu handlowego jopka
-                            if(lastcard == topCard) { //TODO: Zamienić mechanikę lastCard na zwrot funkcji
-                                whileCount--;
-                            }
-                            else whileCount = numberOfPlayingPlayers;
+                            input = gracze[yCurrentPlayer].playCard(gamemodeKey,gamemode);
+                            if(input % 13 == gamemodeKey) {
+                                whileCount = numberOfPlayingPlayers;
+                                jCheck[yCurrentPlayer] = true;
+                                gamemode = 5; //ustalona figura żądania
+                            } else if (input % 13 == 10) {
+                                whileCount = numberOfPlayingPlayers;
+                                //new gamemodeKey request
+                            } else whileCount--;
                             yCurrentPlayer = nextPlayer(yCurrentPlayer);
                         }
-                        //tutaj powinien być własny while(loop) żeby nie gubić kolejki graczy
-                    //tryb jopkowy handlowy
                         gamemode = 0;
                     }
                     break;
@@ -177,8 +181,13 @@ namespace makao.components {
                     {
                         int whileCount = numberOfPlayingPlayers;
                         int yCurrentPlayer = currentPlayer;
-                        //tutaj też własny loop
-                    //tryb jopkowy egzekucyjny
+                        
+                        while(whileCount) {
+                            if(!jCheck[yCurrentPlayer]) 
+                                gracze[yCurrentPlayer].hand.Add(talia.takeCard(2));
+                            else jCheck[ycurrentPlayer] = false;
+                            whileCount--;
+                        }
                         gamemode = 0;
                     }
                     break;
