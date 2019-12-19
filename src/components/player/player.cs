@@ -1,6 +1,4 @@
-//TODO
-
-//dla playcard() dodać przeładowanie z uwzględnieniem gamemode 1-5 
+//TODO: scalić requestFigure i requestColor
 
 using System;
 using System.Collections.Generic;
@@ -10,17 +8,20 @@ using makao.components.ioSystem;
 
 namespace makao.components.player {
     public class Player {
+        int id;
         //string name;
         bool isThisBot;
         bool isPlaying;
         public List<int> hand;
         int stunCount;
+        
 
-        public Player() : this(false) {}
-        public Player(/*string plName, */ bool bot) {
+        public Player(int i) : this(i,false) {}
+        public Player(/*string plName, */int i, bool bot) {
             //name = plName;
             isThisBot = bot;
             isPlaying = true;
+            id = i;
         }
 
         //przerobić na właściwość      
@@ -29,23 +30,66 @@ namespace makao.components.player {
             stunCount--;
         }
 
+        public int requestFigure() {
+            ioSystem.ioSystem.jackRequest(id);
+            int retCard = -2;
+            while(retCard == -2) {
+                try {
+                    ioSystem.ioSystem.znakZachety(id);
+                    retCard = Int32.Parse(Console.ReadLine());
+                    retCard--; //dla gracza karta #0 jest kartą #1
+                } catch(FormatException e) {
+                    ioSystem.ioSystem.formatError(id);
+                    retCard = -2;
+                }
+                if(retCard >= 10 || retCard < -2 || retCard == 0 || retCard == 1 || retCard == 2) {
+                    ioSystem.ioSystem.incompatibileRequest(id);
+                    retCard = -2;
+                }
+            }
+            return retCard;
+        }
+
+        public int requestColor() {
+            ioSystem.ioSystem.aceRequest(id);
+            int retCard = -2;
+            while(retCard == -2) {
+                try {
+                    ioSystem.ioSystem.znakZachety(id);
+                    retCard = Int32.Parse(Console.ReadLine());
+                    retCard--; //dla gracza karta #0 jest kartą #1
+                } catch(FormatException e) {
+                    ioSystem.ioSystem.formatError(id);
+                    retCard = -2;
+                }
+                if(retCard > 3 || retCard < 0) {
+                    ioSystem.ioSystem.incompatibileRequest(id);
+                    retCard = -2;
+                }
+            }
+            return retCard;
+        }
         public int playCard(int topCard, int gamemode) { 
             int pCard = -2;
             do {
-                if(pCard != -2) ioSystem.ioSystem.incompatibileCard();
+                if(pCard != -2) ioSystem.ioSystem.incompatibileCard(id);
 
                 while(pCard == -2) {
-                    ioSystem.ioSystem.printCurrentPlayerHand(hand);
+                    if(gamemode == 4 || gamemode == 5) 
+                        ioSystem.ioSystem.jackContinue(id,topCard,gamemode==4);
+
+                    ioSystem.ioSystem.printCurrentPlayerHand(id,hand);
                     try {
+                        ioSystem.ioSystem.znakZachety(id);
                         pCard = Int32.Parse(Console.ReadLine());
                         pCard--; //dla gracza karta #0 jest kartą #1
                     } catch(FormatException e) {
-                        ioSystem.ioSystem.formatError();
+                        ioSystem.ioSystem.formatError(id);
                         pCard = -2;
                     }
                     
                     if(pCard >= hand.Count || pCard < -2) {
-                        ioSystem.ioSystem.outOfHandRange();
+                        ioSystem.ioSystem.outOfHandRange(id);
                         pCard = -2;
                     } 
                 }
@@ -84,6 +128,10 @@ namespace makao.components.player {
                 || pCard == -1;
             if(gamemode == 5) 
                 return pCard % 13 == topCard % 13 || pCard == -1;
+        }
+
+        public void youGot(List<int> penaltyCards) {
+            ioSystem.ioSystem.youGot(id,penaltyCards);
         }
     }
 

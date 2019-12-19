@@ -16,6 +16,16 @@ using makao.components.ioSystem;
 using makao.components.cards;
 using makao.components.player;
 
+/*enum game{
+    T_NORMALNY = 0,
+    T_POBRANIOWY,
+    T_BLOKUJACY,
+    T_ASOWY,
+    T_J_HANDLOWY,
+    T_J_EGZEKUCYJNY
+
+}*/
+
 
 namespace makao.components {
     public class Game {
@@ -45,7 +55,7 @@ namespace makao.components {
             else talia = new Deck();
             
             for(int i = 0; i < playersNb; i++) {
-                gracze.Add(new Player());
+                gracze.Add(new Player(i));
                 gracze[i].hand = talia.takeCard(cardsNb);
                 jCheck.Add(false);
             }
@@ -64,6 +74,7 @@ namespace makao.components {
                 
                 if(gracze[currentPlayer].StunCount) {
                     gracze[currentPlayer].decreaseStunCount();
+                    ioSystem.ioSystem.playerFrozen(currentPlayer,gracze[currentPlayer].StunCount);
                     nextPlayer();
                     continue;
                 }
@@ -102,7 +113,8 @@ namespace makao.components {
                                 case 10:
                                 {
                                     gamemode = 4;
-                                    //prośba o figurę
+                                    gamemodeKey = gracze[currentPlayer].requestFigure();
+                                    ioSystem.ioSystem.figRequested(currentPlayer,gamemodeKey,0);
                                 }
                                 case 12:
                                 {
@@ -119,7 +131,8 @@ namespace makao.components {
                         //musisz przebić leżącą kartę, albo pobrać (wiele) kart
                         int input = gracze[currentPlayer].playCard(stol.TopCard, 1);
                         if(input == -1) {
-                            gracze[currentPlayer].hand.Add(talia.takeCard(penaltyStack));
+                            List<int> penaltyCards = talia.takeCard(penaltyStack);
+                            gracze[currentPlayer].hand.Concat(penaltyCards);
                             penaltyStack = 0;
                             gamemode = 0;
                         } else if(input == 11) {
@@ -164,14 +177,20 @@ namespace makao.components {
                         int input;
                         while (whileCount) {
                             input = gracze[yCurrentPlayer].playCard(gamemodeKey,gamemode);
+                            if(input != -1) {
+                                stol.TopCard = input;
+                                ioSystem.ioSystem.playerMove(yCurrentPlayer,input);
+                            }
                             if(input % 13 == gamemodeKey) {
                                 whileCount = numberOfPlayingPlayers;
                                 jCheck[yCurrentPlayer] = true;
                                 gamemode = 5; //ustalona figura żądania
                             } else if (input % 13 == 10) {
                                 whileCount = numberOfPlayingPlayers;
-                                //new gamemodeKey request
+                                gamemodeKey = gracze[yCurrentPlayer].requestFigure();
+                                ioSystem.ioSystem.figRequested(yCurrentPlayer,gamemodeKey,1);
                             } else whileCount--;
+                            
                             yCurrentPlayer = nextPlayer(yCurrentPlayer);
                         }
                         gamemode = 0;
@@ -184,7 +203,7 @@ namespace makao.components {
                         
                         while(whileCount) {
                             if(!jCheck[yCurrentPlayer]) 
-                                gracze[yCurrentPlayer].hand.Add(talia.takeCard(2));
+                                gracze[yCurrentPlayer].hand.Concat(talia.takeCard(2));
                             else jCheck[ycurrentPlayer] = false;
                             whileCount--;
                         }

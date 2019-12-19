@@ -9,38 +9,112 @@ namespace makao.components.ioSystem {
 
 
     public static class ioSystem {
-        //INFORMUJĄCE
+        //GLOBALNE INFO
         public static void kolejNa(int nr) => Console.WriteLine("Aktualnie rusza się gracz " + nr);
-        public static void printCurrentPlayerHand(List<int> hand) {
+
+        public static void playerMove(int player, int card) {
+            Console.WriteLine("Gracz {0} rzuca {1}", toText(card));
+        }
+
+        public static void playerIdle(int nr) { 
+            Console.WriteLine("Gracz {0} pomija swoją kolej i pobiera kartę.", nr);
+        }
+
+        public static void playerFrozen(int nr, int q) { 
+            Console.WriteLine("Gracz {0} stoi kolejkę.", nr);
+            if(q > 0) Console.WriteLine("Zostało mu jeszcze {0} kolejek", q);
+            else Console.WriteLine("W następnej turze wchodzi do gry");
+        }
+
+        public static void figRequested(int player, int card, bool bid) {
+            if(bid) Console.WriteLine("Gracz {0} przebija żądanie. Obowiązuje {1}.",player,toFigure(card));
+            else Console.WriteLine("Gracz {0} żąda karty {1}!",player,toFigure(card));
+        }
+
+        //PRYWATNE INFO
+
+        public static void znakZachety(int player) {
+            Console.Write(pHeader(player) + '>');
+        }
+
+        public static void printCurrentPlayerHand(int player, List<int> hand) {
             int key = 1;
-            Console.WriteLine("Masz dostępne następujace karty:");
+            Console.WriteLine(pHeader(player) + "Masz dostępne następujace karty:");
+            Console.Write(pHeader(player));
             foreach(int karta in hand) {
                 Console.Write(key + ") " + toText(karta) + " # ");
                 key++;
             }
         }
 
-        public static void playerIdle(int nr) 
-            => Console.WriteLine("Gracz {0} pomija kolejkę i pobiera kartę.", nr);
+        public static void aceRequest(int player) {
+            
+            Console.WriteLine(pHeader(player) + "Podaj kolor, na który zmieniasz:");
+            
+            Console.WriteLine(pHeader(player) + "1 - Serca, 2 - Dzwonki, 3 - Trefle, 4 - Piki");
+        }
+
+        public static void jackRequest(int player) {
+            
+            Console.WriteLine(pHeader(player) + "Podaj żądaną figurę:");
+            Console.WriteLine(pHeader(player) + "Możliwe: 5, 6, 7, 8, 9, 10");
+            Console.WriteLine(pHeader(player) + "0 - brak żądania");
+        }
+            
+        public static void jackContinue(int player, int card, bool beatable) {
+            Console.WriteLine(pHeader(player) + "Aktualnie żądany jest {0}", toFigure(card % 13));
+            if(beatable) Console.WriteLine(pHeader(player) + "Możesz przebić dowolnym J!");
+        }
+
+        public static void youGot(int player, List<int> penaltyHand) {
+            Console.WriteLine(pHeader(player) + "Dostałeś następujące karty: ");
+            Console.Write(pHeader(player));
+            foreach (int item in penaltyCards) {
+                Console.Write(toText(item) + ' ');
+            }
+            Console.WriteLine();
+        }
 
         //BŁĘDY
 
-        public static void formatError() {
-            Console.WriteLine("Błędne wejście, spróbuj ponownie.");
+        public static void formatError(int player) {
+            Console.WriteLine(pHeader(player) + "Błędne wejście, spróbuj ponownie.");
         }
 
-        public static void outOfHandRange() {
-            Console.WriteLine("Karta spoza zakresu ręki");
+        public static void outOfHandRange(int player) {
+            Console.WriteLine(pHeader(player) + "Karta spoza zakresu ręki");
         }
 
-        public static void incompatibileCard() {
-            Console.WriteLine("Nie można położyć tej karty!");
+        public static void incompatibileCard(int player) {
+            Console.WriteLine(pHeader(player) + "Nie można położyć tej karty!");
+        }
+
+        public static void incompatibileRequest(int player) {
+            Console.WriteLine(pHeader(player) + "Nieprawidłowy wybór, spróbuj jeszcze raz.");
         }
 
         //POMOCNICZE
-        private static string toText(int nb) {
-            int col = nb / 4;
-            int fig = nb % 13;
+
+        public static string pHeader(int player) {
+            return "[Gracz " + player + "] ";
+        }
+
+        private static string toColor(int col) {
+            string cardName;
+            switch(col) {
+                case 0:
+                    cardName += "♥"; break;
+                case 1:
+                    cardName += "♦"; break;
+                case 2:
+                    cardName += "♣"; break;
+                case 3:
+                    cardName += "♠"; break;
+                default:
+                    cardName += "-COLOR";
+            }
+        }
+        private static string toFigure(int fig) {
             string cardName;
             switch(fig) {
                 case 0:
@@ -72,18 +146,11 @@ namespace makao.components.ioSystem {
                 default:
                     cardName = "FIGURE-";
             }
-            switch(col) {
-                case 0:
-                    cardName += "♥"; break;
-                case 1:
-                    cardName += "♦"; break;
-                case 2:
-                    cardName += "♣"; break;
-                case 3:
-                    cardName += "♠"; break;
-                default:
-                    cardName += "-COLOR";
-            }
+        }
+        private static string toText(int nb) {
+            int col = nb / 4;
+            int fig = nb % 13;
+            string cardName = toColor(col) + toFigure(fig);
         }
     }
 }
