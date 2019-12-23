@@ -2,6 +2,8 @@
 
 //Dać możliwośc wybrania ilości graczy, startowych kart
 
+//DALEJ NIEROZWIAZANY BUG KREOWANIA INSTANCJI KLAS Z INNYCH PLIKÓW
+
 using System;
 using makao.components;
 

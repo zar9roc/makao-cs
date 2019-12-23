@@ -10,23 +10,23 @@ namespace makao.components.cards {
     public class Deck {
         public Deck() {
         }
-        public List<int> takeCard(int amount) {
-            uint rand = new Random();
+        virtual public List<int> takeCard(int amount) {
+            Random rand = new Random();
             List<int> zbior = new List<int>();
 
-            for(var i = amount; --i >= 0;) 
-                zbior.Add(rand.Next() % 52);
-            
+            for(var i = amount; --i >= 0;)  {
+                zbior.Add(rand.Next(52));
+            }
             return zbior;
         }
 
-        public int takeOneCard() {
-            uint rand = new Random();
-            return rand.Next() % 52;
+        virtual public int takeOneCard() {
+            var rand = new Random();
+            return rand.Next(52);
         }
     }
 
-    class finDeck : Deck {
+    /*class finDeck : Deck {
         List<int> deck;
 
         public finDeck() {
@@ -51,31 +51,34 @@ namespace makao.components.cards {
             return zbior;
         }
 
-        private override void returnCardsToDeck(List<int> returnedCards) {
+        private void returnCardsToDeck(List<int> returnedCards) {
             deck.Concat(returnedCards); //yeah, dziala
-            /*
-            A w game.cs dać:
-            returnCardsToDeck(instancjaTable.returnCards());
-            */
-        }
-    }
+            
+            //A w game.cs dać:
+            //returnCardsToDeck(instancjaTable.returnCards());
+            
+        } 
+    } */
 
     public class Table {
         private int topCard;
 
         public Table() {
-            uint rand = new Random();
+            Random rand = new Random();
             do {
-                topCard = rand % 52;
+                int canTopCard = rand.Next();
+                topCard = canTopCard % 52;
             } while ((topCard % 13) <= 10 && (topCard % 13) != 0);
         }
 
         public int TopCard { //niewielki sens użycia
             get => topCard;
-            set => topCard;
+            set {
+                topCard = value;
+            } 
         }
     }
-    public class finTable : Table { //do skończenia innym razem
+    /*public class finTable : Table { //do skończenia innym razem
         List<int> stos;
         public Table() {
             //nameOfDeck.takeCard(1);
@@ -100,5 +103,5 @@ namespace makao.components.cards {
             //komunikat o zwróceniu kart do stosu
             return cardsToReturn;
         }
-    }
+    }*/
 }

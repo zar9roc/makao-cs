@@ -11,9 +11,9 @@ namespace makao.components.player {
         int id;
         //string name;
         bool isThisBot;
-        bool isPlaying;
+        public bool isPlaying;
         public List<int> hand;
-        int stunCount;
+        public int stunCount;
         
 
         public Player(int i) : this(i,false) {}
@@ -24,8 +24,6 @@ namespace makao.components.player {
             id = i;
         }
 
-        //przerobić na właściwość      
-        public int StunCount => stunCount; //po co mi to
         public void decreaseStunCount() {
             stunCount--;
         }
@@ -39,6 +37,7 @@ namespace makao.components.player {
                     retCard = Int32.Parse(Console.ReadLine());
                     retCard--; //dla gracza karta #0 jest kartą #1
                 } catch(FormatException e) {
+                    string errorHandling = e.Message;
                     ioSystem.ioSystem.formatError(id);
                     retCard = -2;
                 }
@@ -128,6 +127,7 @@ namespace makao.components.player {
                 || pCard == -1;
             if(gamemode == 5) 
                 return pCard % 13 == topCard % 13 || pCard == -1;
+            return false;
         }
 
         public void youGot(List<int> penaltyCards) {
@@ -137,7 +137,7 @@ namespace makao.components.player {
 
     
 
-    public class Bot : Player {
+    /*public class Bot : Player {
 
-    }
+    } */
 }

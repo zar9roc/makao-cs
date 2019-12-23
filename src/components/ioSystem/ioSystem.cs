@@ -69,7 +69,7 @@ namespace makao.components.ioSystem {
         public static void youGot(int player, List<int> penaltyHand) {
             Console.WriteLine(pHeader(player) + "Dostałeś następujące karty: ");
             Console.Write(pHeader(player));
-            foreach (int item in penaltyCards) {
+            foreach (int item in penaltyHand) {
                 Console.Write(toText(item) + ' ');
             }
             Console.WriteLine();
@@ -103,16 +103,17 @@ namespace makao.components.ioSystem {
             string cardName;
             switch(col) {
                 case 0:
-                    cardName += "♥"; break;
+                    cardName = "♥"; break;
                 case 1:
-                    cardName += "♦"; break;
+                    cardName = "♦"; break;
                 case 2:
-                    cardName += "♣"; break;
+                    cardName = "♣"; break;
                 case 3:
-                    cardName += "♠"; break;
+                    cardName = "♠"; break;
                 default:
-                    cardName += "-COLOR";
+                    cardName = "-COLOR"; break;
             }
+            return cardName;
         }
         private static string toFigure(int fig) {
             string cardName;
@@ -144,13 +145,14 @@ namespace makao.components.ioSystem {
                 case 12:
                     cardName = "K"; break;
                 default:
-                    cardName = "FIGURE-";
+                    cardName = "FIGURE-"; break;
             }
+            return cardName;
         }
         private static string toText(int nb) {
             int col = nb / 4;
             int fig = nb % 13;
-            string cardName = toColor(col) + toFigure(fig);
+            return toColor(col) + toFigure(fig);
         }
     }
 }

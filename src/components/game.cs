@@ -39,20 +39,19 @@ namespace makao.components {
         int gamemode;
         int gamemodeKey;
         List<bool> jCheck;
-
         public Deck talia;
         public Table stol;
         public List<Player> gracze;
         
-        public Game(string nameGame, int playersNb, int cardsNb, int decksNb, bool findeck) {
+        public Game(string nameGame, int playersNb, int cardsNb) {
             name = nameGame;
             numberOfPlayers = playersNb;
             numberOfPlayingPlayers = playersNb;
             numberOfStartingCards = cardsNb;
             stol = new Table(); //else finTable
 
-            if(findeck )talia = new finDeck(decksNb); 
-            else talia = new Deck();
+            //if(findeck )talia = new finDeck(decksNb); 
+            /*else*/ talia = new Deck();
             
             for(int i = 0; i < playersNb; i++) {
                 gracze.Add(new Player(i));
@@ -60,11 +59,11 @@ namespace makao.components {
                 jCheck.Add(false);
             }
         }
-        public Game(string nameGame, int playersNb, int cardsNb) {
+        /*public Game(string nameGame, int playersNb, int cardsNb) {
             Game(nameGame, playersNb, cardsNb, playersNb % 4);
-        }
+        } 
         public Game(int playersNb, int cardsNb, int decksNb) : this("Gra_"+playersNb+cardsNb,playersNb,cardsNb, decksNb){
-        }
+        } */
 
 
         public string playGame() {
@@ -72,27 +71,28 @@ namespace makao.components {
 
                 ioSystem.ioSystem.kolejNa(currentPlayer);
                 
-                if(gracze[currentPlayer].StunCount) {
+                if(gracze[currentPlayer].stunCount > 0) {
                     gracze[currentPlayer].decreaseStunCount();
-                    ioSystem.ioSystem.playerFrozen(currentPlayer,gracze[currentPlayer].StunCount);
-                    nextPlayer();
+                    ioSystem.ioSystem.playerFrozen(currentPlayer,gracze[currentPlayer].stunCount);
+                    nextPlayer(currentPlayer);
                     continue;
                 }
                 switch(gamemode) {
                     case 0:
                     {
-                        int input = gracze[currentPlayer].playCard(stol.TopCard, 0);
-                        if(input == -1) {
+                        int playerInput = gracze[currentPlayer].playCard(stol.TopCard, 0);
+                        if(playerInput == -1) {
                             ioSystem.ioSystem.playerIdle(currentPlayer);
                             gracze[currentPlayer].hand.Add(talia.takeOneCard());
                             //szybkie przebicie? --GUI
                         } else {
-                            stol.TopCard = input; 
+                            stol.TopCard = playerInput; 
 
-                            switch(input % 13) {
+                            switch(playerInput % 13) {
                                 case 0: //AS
                                 {
                                     gamemode = 3;
+                                    playerInput = gracze[currentPlayer].requestColor();
                                     //io: podaj kolor, na który zmieniasz
                                 } break;
                                 case 1: //2
@@ -114,13 +114,13 @@ namespace makao.components {
                                 {
                                     gamemode = 4;
                                     gamemodeKey = gracze[currentPlayer].requestFigure();
-                                    ioSystem.ioSystem.figRequested(currentPlayer,gamemodeKey,0);
-                                }
+                                    ioSystem.ioSystem.figRequested(currentPlayer,gamemodeKey,false);
+                                } break;
                                 case 12:
                                 {
                                     penaltyStack = 5;
                                     gamemode = 1;
-                                }
+                                } break;
                             }
                         }
                     }
@@ -151,44 +151,44 @@ namespace makao.components {
                     break;
                     case 2: // PRZEBIJANIE 4
                     {
-                        int input = gracze[currentPlayer].playCard(stol.TopCard, 2);
-                        if(input == -1) {
-                            gracze[currentPlayer].StunCount = penaltyStack;
+                        int playerInput = gracze[currentPlayer].playCard(stol.TopCard, 2);
+                        if(playerInput == -1) {
+                            gracze[currentPlayer].stunCount = penaltyStack;
                             penaltyStack = 0;
                             gamemode = 0;
-                        } else if(input == 11) {
+                        } else if(playerInput == 11) {
                             penaltyStack = 0;
                             gamemode = 0;
-                        } else if(input % 13 == 3) penaltyStack++;
+                        } else if(playerInput % 13 == 3) penaltyStack++;
                         //else IO -> coś poszło nie tak
                     } break;
                     case 3: // AS
                     {
-                        int input = gracze[currentPlayer].playCard(gamemodeKey, 0);
-                        if(input != -1) {
+                        int playerInput = gracze[currentPlayer].playCard(gamemodeKey, 0);
+                        if(playerInput != -1) {
                             gamemode = 0;
-                            stol.TopCard = input;
+                            stol.TopCard = playerInput;
                         } else gracze[currentPlayer].hand.Add(talia.takeOneCard());
                     } break;
                     case 4: // J HANDLOWY
                     {
                         int whileCount = numberOfPlayingPlayers;
                         int yCurrentPlayer = currentPlayer;
-                        int input;
-                        while (whileCount) {
-                            input = gracze[yCurrentPlayer].playCard(gamemodeKey,gamemode);
-                            if(input != -1) {
-                                stol.TopCard = input;
-                                ioSystem.ioSystem.playerMove(yCurrentPlayer,input);
+                        int playerInput;
+                        while (whileCount > 0) {
+                            playerInput = gracze[yCurrentPlayer].playCard(gamemodeKey,gamemode);
+                            if(playerInput != -1) {
+                                stol.TopCard = playerInput;
+                                ioSystem.ioSystem.playerMove(yCurrentPlayer,playerInput);
                             }
-                            if(input % 13 == gamemodeKey) {
+                            if(playerInput % 13 == gamemodeKey) {
                                 whileCount = numberOfPlayingPlayers;
                                 jCheck[yCurrentPlayer] = true;
                                 gamemode = 5; //ustalona figura żądania
-                            } else if (input % 13 == 10) {
+                            } else if (playerInput % 13 == 10) {
                                 whileCount = numberOfPlayingPlayers;
                                 gamemodeKey = gracze[yCurrentPlayer].requestFigure();
-                                ioSystem.ioSystem.figRequested(yCurrentPlayer,gamemodeKey,1);
+                                ioSystem.ioSystem.figRequested(yCurrentPlayer,gamemodeKey,true);
                             } else whileCount--;
                             
                             yCurrentPlayer = nextPlayer(yCurrentPlayer);
@@ -201,10 +201,10 @@ namespace makao.components {
                         int whileCount = numberOfPlayingPlayers;
                         int yCurrentPlayer = currentPlayer;
                         
-                        while(whileCount) {
+                        while(whileCount > 0) {
                             if(!jCheck[yCurrentPlayer]) 
                                 gracze[yCurrentPlayer].hand.Concat(talia.takeCard(2));
-                            else jCheck[ycurrentPlayer] = false;
+                            else jCheck[yCurrentPlayer] = false;
                             whileCount--;
                         }
                         gamemode = 0;
@@ -224,7 +224,7 @@ namespace makao.components {
         }
 
         private int nextPlayer(int round) {
-            if(++round == numberOfPlayers) roun = 0;
+            if(++round == numberOfPlayers) round = 0;
             while(!gracze[currentPlayer].isPlaying) {
                 if(++round == numberOfPlayers) round = 0;
             }
