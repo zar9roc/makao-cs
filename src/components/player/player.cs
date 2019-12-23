@@ -58,6 +58,7 @@ namespace makao.components.player {
                     retCard = Int32.Parse(Console.ReadLine());
                     retCard--; //dla gracza karta #0 jest kartą #1
                 } catch(FormatException e) {
+                    string errorHandling = e.Message;
                     ioSystem.ioSystem.formatError(id);
                     retCard = -2;
                 }
@@ -83,6 +84,7 @@ namespace makao.components.player {
                         pCard = Int32.Parse(Console.ReadLine());
                         pCard--; //dla gracza karta #0 jest kartą #1
                     } catch(FormatException e) {
+                        string errorHandling = e.Message;
                         ioSystem.ioSystem.formatError(id);
                         pCard = -2;
                     }
