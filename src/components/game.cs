@@ -49,13 +49,16 @@ namespace makao.components {
             numberOfPlayingPlayers = playersNb;
             numberOfStartingCards = cardsNb;
             stol = new Table(); //else finTable
+            gracze = new List<Player>();
+            jCheck = new List<bool>();
 
             //if(findeck )talia = new finDeck(decksNb); 
             /*else*/ talia = new Deck();
             
-            for(int i = 0; i < playersNb; i++) {
-                gracze.Add(new Player(i));
-                gracze[i].hand = talia.takeCard(cardsNb);
+            for(int i = 1; i <= playersNb; i++) {
+                Player gracz = new Player(i);
+                gracze.Add(gracz);
+                gracze[i - 1].hand = talia.takeCard(cardsNb);
                 jCheck.Add(false);
             }
         }

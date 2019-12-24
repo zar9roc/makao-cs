@@ -10,7 +10,7 @@ namespace makao.components.ioSystem {
 
     public static class ioSystem {
         //GLOBALNE INFO
-        public static void kolejNa(int nr) => Console.WriteLine("Aktualnie rusza się gracz " + nr);
+        public static void kolejNa(int nr) => Console.WriteLine("Aktualnie rusza się gracz " + ++nr);
 
         public static void playerMove(int player, int card) {
             Console.WriteLine("Gracz {0} rzuca {1}", toText(card));
@@ -41,10 +41,11 @@ namespace makao.components.ioSystem {
             int key = 1;
             Console.WriteLine(pHeader(player) + "Masz dostępne następujace karty:");
             Console.Write(pHeader(player));
-            foreach(int karta in hand) {
-                Console.Write(key + ") " + toText(karta) + " # ");
+            foreach(int v in hand) {
+                Console.Write(key + ") " + toText(v) + " # ");
                 key++;
             }
+            Console.WriteLine();
         }
 
         public static void aceRequest(int player) {

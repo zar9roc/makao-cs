@@ -13,9 +13,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/adam/Documents/Projekt/makao-cs/makao.csproj",
-      "projectName": "makao",
-      "projectPath": "/home/adam/Documents/Projekt/makao-cs/makao.csproj",
+      "projectUniqueName": "/home/adam/Documents/Projekt/makao-cs/makao-cs.csproj",
+      "projectName": "makao-cs",
+      "projectPath": "/home/adam/Documents/Projekt/makao-cs/makao-cs.csproj",
       "packagesPath": "/home/adam/.nuget/packages/",
       "outputPath": "/home/adam/Documents/Projekt/makao-cs/obj/",
       "projectStyle": "PackageReference",

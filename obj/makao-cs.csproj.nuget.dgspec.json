@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/adam/Documents/VSCODE/VSCODE.csproj": {}
+    "/home/adam/Documents/Projekt/makao-cs/makao-cs.csproj": {}
   },
   "projects": {
-    "/home/adam/Documents/VSCODE/VSCODE.csproj": {
+    "/home/adam/Documents/Projekt/makao-cs/makao-cs.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/adam/Documents/VSCODE/VSCODE.csproj",
-        "projectName": "VSCODE",
-        "projectPath": "/home/adam/Documents/VSCODE/VSCODE.csproj",
+        "projectUniqueName": "/home/adam/Documents/Projekt/makao-cs/makao-cs.csproj",
+        "projectName": "makao-cs",
+        "projectPath": "/home/adam/Documents/Projekt/makao-cs/makao-cs.csproj",
         "packagesPath": "/home/adam/.nuget/packages/",
-        "outputPath": "/home/adam/Documents/VSCODE/obj/",
+        "outputPath": "/home/adam/Documents/Projekt/makao-cs/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/adam/.nuget/NuGet/NuGet.Config"
@@ -45,12 +45,26 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[3.0.1, 3.0.1]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.linux-x64",
+              "version": "[3.0.1, 3.0.1]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[3.0.0, 3.0.0]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/opt/dotnet/sdk/3.0.100/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/opt/dotnet/sdk/3.1.100/RuntimeIdentifierGraph.json"
         }
       }
     }

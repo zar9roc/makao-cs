@@ -9,7 +9,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/bin/Debug/netcoreapp3.0/makao.dll",
+            "program": "${workspaceFolder}/bin/Debug/netcoreapp3.0/makao-cs.dll",
             "args": [],
             "cwd": "${workspaceFolder}",
             "console": "internalConsole",

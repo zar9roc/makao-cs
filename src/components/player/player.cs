@@ -22,6 +22,7 @@ namespace makao.components.player {
             isThisBot = bot;
             isPlaying = true;
             id = i;
+            hand = new List<int>();
         }
 
         public void decreaseStunCount() {
@@ -79,6 +80,7 @@ namespace makao.components.player {
                         ioSystem.ioSystem.jackContinue(id,topCard,gamemode==4);
 
                     ioSystem.ioSystem.printCurrentPlayerHand(id,hand);
+                    
                     try {
                         ioSystem.ioSystem.znakZachety(id);
                         pCard = Int32.Parse(Console.ReadLine());

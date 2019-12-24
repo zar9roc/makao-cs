@@ -6,15 +6,15 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v3.0": {
-      "VSCODE/1.0.0": {
+      "makao-cs/1.0.0": {
         "runtime": {
-          "VSCODE.dll": {}
+          "makao-cs.dll": {}
         }
       }
     }
   },
   "libraries": {
-    "VSCODE/1.0.0": {
+    "makao-cs/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

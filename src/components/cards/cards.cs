@@ -13,7 +13,7 @@ namespace makao.components.cards {
         virtual public List<int> takeCard(int amount) {
             Random rand = new Random();
             List<int> zbior = new List<int>();
-
+            
             for(var i = amount; --i >= 0;)  {
                 zbior.Add(rand.Next(52));
             }
