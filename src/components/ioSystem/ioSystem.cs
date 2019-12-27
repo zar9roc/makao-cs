@@ -1,3 +1,5 @@
+/* (c) Adam Szczepanik. See licence.txt in the root of the distribution for more information. */
+
 //TODO:
 
 
@@ -10,10 +12,14 @@ namespace makao.components.ioSystem {
 
     public static class ioSystem {
         //GLOBALNE INFO
+
+        public static void printTopCard(int topCard) {
+            Console.WriteLine("Na stole leży " + toText(topCard));
+        }
         public static void kolejNa(int nr) => Console.WriteLine("Aktualnie rusza się gracz " + ++nr);
 
         public static void playerMove(int player, int card) {
-            Console.WriteLine("Gracz {0} rzuca {1}", toText(card));
+            Console.WriteLine("Gracz {0} rzuca {1}", player, toText(card));
         }
 
         public static void playerIdle(int nr) { 
@@ -34,7 +40,7 @@ namespace makao.components.ioSystem {
         //PRYWATNE INFO
 
         public static void znakZachety(int player) {
-            Console.Write(pHeader(player) + '>');
+            Console.Write(pHeader(player) + "> ");
         }
 
         public static void printCurrentPlayerHand(int player, List<int> hand) {
@@ -42,7 +48,7 @@ namespace makao.components.ioSystem {
             Console.WriteLine(pHeader(player) + "Masz dostępne następujace karty:");
             Console.Write(pHeader(player));
             foreach(int v in hand) {
-                Console.Write(key + ") " + toText(v) + " # ");
+                Console.Write(key + ") " + toText(v) + "   ");
                 key++;
             }
             Console.WriteLine();
@@ -62,7 +68,17 @@ namespace makao.components.ioSystem {
             Console.WriteLine(pHeader(player) + "0 - brak żądania");
         }
             
-        public static void jackContinue(int player, int card, bool beatable) {
+        public static void aceInfo(int player, int color) {
+            Console.WriteLine(pHeader(player) + "As zmienia kolor na " + toColor(color));
+        }
+        public static void pickupInfo(int player, int charge) {
+            Console.WriteLine(pHeader(player) + "Musisz przebić kartę, w przeciwnym przypadku pobierasz {0} kart.", charge);
+        }
+
+        public static void skipInfo(int player, int charge) {
+            Console.WriteLine(pHeader(player) + "Musisz przebić kartę, w przeciwnym przypadku stoisz kolejek: {0}", charge);
+        }
+        public static void jackInfo(int player, int card, bool beatable) {
             Console.WriteLine(pHeader(player) + "Aktualnie żądany jest {0}", toFigure(card % 13));
             if(beatable) Console.WriteLine(pHeader(player) + "Możesz przebić dowolnym J!");
         }
@@ -151,9 +167,9 @@ namespace makao.components.ioSystem {
             return cardName;
         }
         private static string toText(int nb) {
-            int col = nb / 4;
             int fig = nb % 13;
-            return toColor(col) + toFigure(fig);
+            int col = nb / 13;
+            return toFigure(fig) + toColor(col);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿//TODO:
+﻿/* (c) Adam Szczepanik. See licence.txt in the root of the distribution for more information. */
+
+//TODO:
 
 //Dać możliwośc wybrania ilości graczy, startowych kart
 

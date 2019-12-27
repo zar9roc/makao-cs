@@ -1,3 +1,5 @@
+/* (c) Adam Szczepanik. See licence.txt in the root of the distribution for more information. */
+
 //TODO:
 
 /*
@@ -10,7 +12,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 using makao.components.ioSystem;
 using makao.components.cards;
@@ -33,7 +34,6 @@ namespace makao.components {
         int numberOfPlayers;
         int numberOfPlayingPlayers;
         int numberOfStartingCards;
-        int topCard;
         int currentPlayer;
         int penaltyStack;
         int gamemode;
@@ -72,6 +72,7 @@ namespace makao.components {
         public string playGame() {
             while(numberOfPlayingPlayers >= 2) {
 
+                ioSystem.ioSystem.printTopCard(stol.TopCard);                
                 ioSystem.ioSystem.kolejNa(currentPlayer);
                 
                 if(gracze[currentPlayer].stunCount > 0) {
@@ -83,7 +84,7 @@ namespace makao.components {
                 switch(gamemode) {
                     case 0:
                     {
-                        int playerInput = gracze[currentPlayer].playCard(stol.TopCard, 0);
+                        int playerInput = gracze[currentPlayer].playCard(stol.TopCard, 0, penaltyStack);
                         if(playerInput == -1) {
                             ioSystem.ioSystem.playerIdle(currentPlayer);
                             gracze[currentPlayer].hand.Add(talia.takeOneCard());
@@ -132,10 +133,10 @@ namespace makao.components {
                     break;
                     case 1: //PRZEBIJANIE 2,3,K
                         //musisz przebić leżącą kartę, albo pobrać (wiele) kart
-                        int input = gracze[currentPlayer].playCard(stol.TopCard, 1);
+                        int input = gracze[currentPlayer].playCard(stol.TopCard, 1,penaltyStack);
                         if(input == -1) {
                             List<int> penaltyCards = talia.takeCard(penaltyStack);
-                            gracze[currentPlayer].hand.Concat(penaltyCards);
+                            gracze[currentPlayer].hand.AddRange(penaltyCards);
                             penaltyStack = 0;
                             gamemode = 0;
                         } else if(input == 11) {
@@ -154,7 +155,7 @@ namespace makao.components {
                     break;
                     case 2: // PRZEBIJANIE 4
                     {
-                        int playerInput = gracze[currentPlayer].playCard(stol.TopCard, 2);
+                        int playerInput = gracze[currentPlayer].playCard(stol.TopCard, 2,penaltyStack);
                         if(playerInput == -1) {
                             gracze[currentPlayer].stunCount = penaltyStack;
                             penaltyStack = 0;
@@ -167,7 +168,7 @@ namespace makao.components {
                     } break;
                     case 3: // AS
                     {
-                        int playerInput = gracze[currentPlayer].playCard(gamemodeKey, 0);
+                        int playerInput = gracze[currentPlayer].playCard(gamemodeKey, 3, penaltyStack);
                         if(playerInput != -1) {
                             gamemode = 0;
                             stol.TopCard = playerInput;
@@ -179,7 +180,7 @@ namespace makao.components {
                         int yCurrentPlayer = currentPlayer;
                         int playerInput;
                         while (whileCount > 0) {
-                            playerInput = gracze[yCurrentPlayer].playCard(gamemodeKey,gamemode);
+                            playerInput = gracze[yCurrentPlayer].playCard(gamemodeKey,gamemode,penaltyStack);
                             if(playerInput != -1) {
                                 stol.TopCard = playerInput;
                                 ioSystem.ioSystem.playerMove(yCurrentPlayer,playerInput);
@@ -206,7 +207,7 @@ namespace makao.components {
                         
                         while(whileCount > 0) {
                             if(!jCheck[yCurrentPlayer]) 
-                                gracze[yCurrentPlayer].hand.Concat(talia.takeCard(2));
+                                gracze[yCurrentPlayer].hand.AddRange(talia.takeCard(2));
                             else jCheck[yCurrentPlayer] = false;
                             whileCount--;
                         }

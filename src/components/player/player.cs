@@ -1,4 +1,7 @@
+/* (c) Adam Szczepanik. See licence.txt in the root of the distribution for more information. */
+
 //TODO: scalić requestFigure i requestColor
+// CanPut szwankuje
 
 using System;
 using System.Collections.Generic;
@@ -70,20 +73,41 @@ namespace makao.components.player {
             }
             return retCard;
         }
-        public int playCard(int topCard, int gamemode) { 
+        public int playCard(int topCard, int gamemode, int charge) { 
             int pCard = -2;
             do {
-                if(pCard != -2) ioSystem.ioSystem.incompatibileCard(id);
+                if(pCard != -2) {
+                    ioSystem.ioSystem.incompatibileCard(id);
+                    pCard = -2;
+                }
 
                 while(pCard == -2) {
-                    if(gamemode == 4 || gamemode == 5) 
-                        ioSystem.ioSystem.jackContinue(id,topCard,gamemode==4);
+                    switch(gamemode) {
+                        case 1:
+                            ioSystem.ioSystem.pickupInfo(id,charge);
+                        break;
+                        case 2:
+                            ioSystem.ioSystem.skipInfo(id,charge);
+                        break;
+                        case 3:
+                            ioSystem.ioSystem.aceRequest(id);
+                        break;
+                        case 4:
+                            ioSystem.ioSystem.jackInfo(id,topCard,true);
+                        break;
+                        case 5:
+                            ioSystem.ioSystem.jackInfo(id,topCard,false);
+                        break;
+
+                    }
 
                     ioSystem.ioSystem.printCurrentPlayerHand(id,hand);
                     
                     try {
                         ioSystem.ioSystem.znakZachety(id);
+
                         pCard = Int32.Parse(Console.ReadLine());
+                        
                         pCard--; //dla gracza karta #0 jest kartą #1
                     } catch(FormatException e) {
                         string errorHandling = e.Message;
@@ -96,8 +120,8 @@ namespace makao.components.player {
                         pCard = -2;
                     } 
                 }
-
-            } while (!canPut(topCard,pCard,gamemode));
+                if(pCard == -1) break;
+            } while (!canPut(topCard, hand[pCard], gamemode));
             if(pCard == -1) return pCard; //PAS
             int retCard = hand[pCard];
             hand.RemoveAt(pCard);
@@ -111,26 +135,26 @@ namespace makao.components.player {
         //gamemode 4: dozwolone $topCard,J
         //gamemode 5: dozwolone $topCard
         private bool canPut(int topCard, int pCard, int gamemode)  {
-            if(gamemode == 0) 
-                return ((pCard / 4) == (topCard / 4))
+            if(gamemode == 0 || gamemode == 3) 
+                return ((pCard / 13) == (topCard / 13))
                 || ((pCard % 13) == (topCard % 13))
                 || pCard == 11 //Q♥
                 || topCard == 11
                 || pCard == -1;
             if(gamemode == 1) 
-                return ((pCard / 4 == topCard / 4) 
-                && (pCard % 13 == 1 || topCard % 13 == 2 || topCard % 13 == 12))
+                return (pCard / 13 == topCard / 13) 
+                && (pCard % 13 == 1 || topCard % 13 == 2 || topCard % 13 == 12)
                 || pCard % 13 == topCard % 13
                 || pCard == 11 //Q♥
                 || pCard == -1;
             if(gamemode == 2) 
-                return pCard % 13 == 3 || pCard == 11 || pCard == -1;
+                return (pCard % 13) == 3 || pCard == 11 || pCard == -1;
             if(gamemode == 4)
-                return pCard % 13 == topCard % 13
-                || pCard % 13 == 10
+                return (pCard % 13) == (topCard % 13)
+                || (pCard % 13) == 10
                 || pCard == -1;
             if(gamemode == 5) 
-                return pCard % 13 == topCard % 13 || pCard == -1;
+                return (pCard % 13) == (topCard % 13) || pCard == -1;
             return false;
         }
 

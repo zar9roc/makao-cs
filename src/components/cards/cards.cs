@@ -1,10 +1,11 @@
+/* (c) Adam Szczepanik. See licence.txt in the root of the distribution for more information. */
+
 //TODO:
 
 //Ujednolicić nazwy metod dla stołu (niekrytyczne)
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace makao.components.cards {
     public class Deck {
@@ -15,6 +16,7 @@ namespace makao.components.cards {
             List<int> zbior = new List<int>();
             
             for(var i = amount; --i >= 0;)  {
+                int randomCard = rand.Next(52);
                 zbior.Add(rand.Next(52));
             }
             return zbior;
@@ -52,7 +54,7 @@ namespace makao.components.cards {
         }
 
         private void returnCardsToDeck(List<int> returnedCards) {
-            deck.Concat(returnedCards); //yeah, dziala
+            deck.AddRange(returnedCards); //yeah, dziala
             
             //A w game.cs dać:
             //returnCardsToDeck(instancjaTable.returnCards());
@@ -66,9 +68,9 @@ namespace makao.components.cards {
         public Table() {
             Random rand = new Random();
             do {
-                int canTopCard = rand.Next();
-                topCard = canTopCard % 52;
-            } while ((topCard % 13) <= 10 && (topCard % 13) != 0);
+                topCard = rand.Next(52);
+            } while ((topCard / 13) <= 10 && (topCard / 13) != 0);
+            
         }
 
         public int TopCard { //niewielki sens użycia
