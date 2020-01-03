@@ -10,7 +10,14 @@ using System.Collections.Generic;
 using makao.components.ioSystem;
 
 namespace makao.components.player {
-    public class Player {
+
+    interface IPlayer {
+        int playCard(int topCard, int gamemode, int charge);
+        void decreaseStunCount();
+        int requestColor();
+        int requestFigure();
+    }
+    public class Player:IPlayer {
         int id;
         //string name;
         bool isThisBot;
@@ -158,14 +165,14 @@ namespace makao.components.player {
             return false;
         }
 
-        public void youGot(List<int> penaltyCards) {
+        /*public void youGot(List<int> penaltyCards) {
             ioSystem.ioSystem.youGot(id,penaltyCards);
-        }
+        } */
     }
 
     
 
-    /*public class Bot : Player {
+    /*public class Bot : IPlayer {
 
     } */
 }
